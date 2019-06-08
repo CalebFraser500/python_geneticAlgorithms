@@ -1,6 +1,6 @@
 import random
 import numpy as np
-
+import time
 
 def create_target_solution(chromosome_length):
     number_of_ones = int(chromosome_length / 2)
@@ -96,10 +96,11 @@ def randomly_mutate_population(population, mutation_probability):
 
 
 # Set general parameters
-chromosome_length = 200
+chromosome_length = 70
 population_size = 500
 maximum_generation = 200
 best_score_progress = []  # Tracks progress
+time_start = time.time()
 
 # Create reference solution
 # (this is used just to illustrate GAs)
@@ -111,6 +112,8 @@ population = create_starting_population(population_size, chromosome_length)
 # Display best score in starting population
 scores = calculate_fitness(target, population)
 best_score = np.max(scores) / chromosome_length * 100
+print("Target Value")
+print(target)
 print('Starting best score, percent target: %.1f' % best_score)
 
 # Add starting best score to progress tracker
@@ -121,7 +124,7 @@ for generation in range(maximum_generation):
     # Create an empty list for new population
     new_population = []
 
-    # Create new popualtion generating two children at a time
+    # Create new population generating two children at a time
     for i in range(int(population_size / 2)):
         parent_1 = select_individual_by_tournament(population, scores)
         parent_2 = select_individual_by_tournament(population, scores)
@@ -138,8 +141,10 @@ for generation in range(maximum_generation):
     best_score_progress.append(best_score)
 
 # GA has completed required generation
-print('End best score, percent target: %.1f' % best_score)
 
+print('End best score, percent target: %.1f' % best_score)
+time_end = time.time()
+print(time_end - time_start)
 # Plot progress
 import matplotlib.pyplot as plt
 
